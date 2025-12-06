@@ -40,15 +40,34 @@ class PaymentController extends Controller
     }
 
     // List semua pembayaran
-    public function index()
+    public function index(Request $request)
     {
-        $payments = Payment::with('client')
-                ->orderBy('tanggal_pembayaran', 'desc')
-                ->get()
-                ->unique('client_id')   // ambil 1 item per client (yang pertama dalam koleksi = terbaru)
-                ->values();             // re-index collection
+        // Ambil filter bulan & tahun (jika ada)
+        $bulan = $request->bulan;
+        $tahun = $request->tahun;
 
-        return view('payments.index', compact('payments'));
+        // Query dasar
+        $query = Payment::with('client')
+            ->orderBy('tanggal_pembayaran', 'desc');
+
+        // Terapkan filter jika dipilih
+        if ($bulan) {
+            $query->whereMonth('tanggal_pembayaran', $bulan);
+        }
+
+        if ($tahun) {
+            $query->whereYear('tanggal_pembayaran', $tahun);
+        }
+
+        // Ambil hanya pembayaran terbaru per client
+        $payments = $query->get()
+                    ->unique('client_id')
+                    ->values();
+
+        // Hitung total pemasukan berdasarkan filter
+        $total_pemasukan = $query->sum('nominal');
+
+        return view('payments.index', compact('payments', 'bulan', 'tahun', 'total_pemasukan'));
     }
 
     public function showByClient($id)
