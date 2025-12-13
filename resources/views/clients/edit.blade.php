@@ -1,42 +1,57 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Edit Client</title>
-</head>
-<body>
+@extends('layouts.app')
 
-    <h1>Edit Client</h1>
+@section('content')
 
-    <form action="{{ route('clients.update', $client->id) }}" method="POST">
+    <h1 class="text-2xl font-bold  mb-4">Edit Client</h1>
+
+    <form action="{{ route('clients.update', $client->id) }}" method="POST" class="bg-white p-6 rounded shadow w-full">
         @csrf
         @method('PUT')
 
-        <label>Nama Client:</label><br>
-        <input type="text" name="nama_client" value="{{ $client->nama_client }}" required><br><br>
+        <div class="mb-3">
+            <label class="block font-semibold">Nama Client:</label>
+            <input type="text" name="nama_client" value="{{ $client->nama_client }}" required class="w-full border px-3 py-2 rounded">
+        </div>
 
-        <label>PPPoE Username:</label><br>
-        <input type="text" name="username_pppoe" value="{{ $client->username_pppoe }}" required><br><br>
+        <div class="mb-3">
+            <label class="block font-semibold">PPPoE Username:</label>
+            <input type="text" name="username_pppoe" value="{{ $client->username_pppoe }}" required class="w-full border px-3 py-2 rounded">
+        </div>
 
-        <label>Paket:</label><br>
-        <input type="text" name="paket" value="{{ $client->paket }}" required><br><br>
+        <div class="mb-3">
+            <label class="block font-semibold">Paket:</label>
+            <input type="text" name="paket" value="{{ $client->paket }}" required class=" w-full border px-3 py-2 rounded">
+        </div>
 
-        <label>No Telp:</label><br>
-        <input type="text" name="no_telp" value="{{ $client->no_telp }}"><br><br>
+        <div class="mb-3">
+            <label class="block font-semibold">No Telp:</label>
+            <input type="text" name="no_telp" value="{{ $client->no_telp }}" required class="w-full border px-3 py-2 rounded">
+        </div>
 
-        <label>Harga:</label><br>
-        <input type="number" name="harga" value="{{ $client->harga }}" required><br><br>
+        <div class="mb-3">
+            <label class="block font-semibold">Harga:</label>
+            <input type="number" name="harga" value="{{ $client->harga }}" required class="w-full border px-3 py-2 rounded">
+        </div>
 
-        <label>Alamat:</label><br>
-        <textarea name="alamat" required>{{ $client->alamat }}</textarea><br><br>
+        <div class="mb-3">
+            <label class="block font-semibold">Alamat:</label>
+            <textarea name="alamat" required class="w-full border px-3 py-2 rounded">{{ $client->alamat }}</textarea>
+        </div>
 
-        <label>Tagihan Bulanan:</label><br>
-        <input type="number" name="tagihan_per_bulan" value="{{ $client->tagihan_per_bulan }}" required><br><br>
+        <div class="mb-3">
+            <label class="block font-semibold">Tagihan Bulanan:</label>
+            <input type="number" name="tagihan_per_bulan" value="{{ $client->tagihan_per_bulan }}" required class="w-full border px-3 py-2 rounded">
+        </div>
 
-        <button type="submit">Update</button>
+        <button class="bg-blue-600 text-white px-4 py-2 rounded" type="submit">Update</button>
+
+        <a href="{{ route('clients.index') }}" class="bg-gray-300 text-gray-800 px-4 py-2 rounded hover:bg-gray-400">Batal</a>
     </form>
 
-    <br>
-    <a href="{{ route('clients.index') }}">← Kembali</a>
+    
+    
 
 </body>
 </html>
+
+@endsection

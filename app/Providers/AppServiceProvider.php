@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -11,7 +12,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register(): void
     {
-        //
     }
 
     /**
@@ -19,6 +19,15 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        Blade::if('role', function ($roles) {
+            if (!auth()->check()) {
+                return false;
+            }
+
+            // roles: "admin" atau "admin,staff"
+            $allowedRoles = array_map('trim', explode(',', $roles));
+
+            return in_array(auth()->user()->role, $allowedRoles);
+        });
     }
 }

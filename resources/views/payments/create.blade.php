@@ -1,38 +1,40 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Tambah Pembayaran</title>
-</head>
-<body>
+@extends('layouts.app')
 
-<h2>Tambah Pembayaran</h2>
+@section('content')
+<h1 class="text-2xl font-bold mb-4">Tambah Pembayaran</h1>
 
-<form action="{{ route('payments.store') }}" method="POST">
+<form action="{{ route('payments.store') }}" method="POST"
+        class="bg-white p-6 rounded shadow w-full">
     @csrf
+<div class="mb-3">
+    <label class="block font-semibold">Pilih Client:</label>
+        <select name="client_id" required class="w-full border px-3 py-2 rounded">
+            <option value="">-- Pilih Client --</option>
+            @foreach($clients as $c)
+                <option value="{{ $c->id }}">{{ $c->nama_client }}</option>
+            @endforeach
+        </select>
+</div>
 
-    <label>Pilih Client:</label><br>
-    <select name="client_id" required>
-        <option value="">-- Pilih Client --</option>
-        @foreach($clients as $c)
-            <option value="{{ $c->id }}">{{ $c->nama_client }}</option>
-        @endforeach
-    </select>
-    <br><br>
+<div class="mb-3">
+    <label class="block font-semibold">Tanggal Pembayaran:</label>
+    <input type="date" name="tanggal_pembayaran" required
+            class="w-full border px-3 py-2 rounded"> 
+</div>
 
-    <label>Tanggal Pembayaran:</label><br>
-    <input type="date" name="tanggal_pembayaran" required>
-    <br><br>
+<div class="mb-3">
+    <label class="block font-semibold">Nominal:</label>
+    <input type="number" name="nominal" required
+            class="w-full border px-3 py-2 rounded">
+</div>
 
-    <label>Nominal:</label><br>
-    <input type="number" name="nominal" required>
-    <br><br>
+<div class="mb-3">
+    <label class="block font-semibold">Keterangan:</label>
+    <textarea name="keterangan" class="w-full border px-3 py-2 rounded"></textarea>
+</div>
 
-    <label>Keterangan:</label><br>
-    <textarea name="keterangan"></textarea>
-    <br><br>
-
-    <button type="submit">Simpan</button>
+    <button class="bg-blue-600 text-white px-4 py-2 rounded" type="submit">Simpan</button>
+    <a href="{{ route('payments.index') }}" class="bg-gray-300 text-gray-800 px-4 py-2 rounded hover:bg-gray-400">Batal</a>
 </form>
 
-</body>
-</html>
+@endsection

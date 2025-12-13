@@ -1,33 +1,36 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Edit Pengeluaran</title>
-</head>
-<body>
+@extends('layouts.app')
 
-    <h1>Edit Pengeluaran</h1>
+@section('content')
 
-    <form action="{{ route('pengeluaran.update', $data->id) }}" method="POST">
+
+    <h1 class="text-2xl font-bold mb-4">Edit Pengeluaran</h1>
+
+    <form action="{{ route('pengeluaran.update', $data->id) }}" method="POST" class="bg-white p-6 rounded shadow w-full">
         @csrf
         @method('PUT')
 
-        <label>Deskripsi:</label><br>
-        <input type="text" name="deskripsi" value="{{ $data->deskripsi }}" required><br><br>
+        <div class="mb-3">
+            <label class="block font-semibold">Deskripsi:</label>
+            <input type="text" name="deskripsi" value="{{ $data->deskripsi }}" required class="w-full border px-3 py-2 rounded">
+        </div>
 
-        <label>Tanggal:</label><br>
-        <input type="date" name="tgl" value="{{ $data->tgl }}" required><br><br>
+        <div class="mb-3">
+            <label class="block font-semibold">Tanggal:</label>
+            <input type="date" name="tgl" value="{{ $data->tgl }}" required class="w-full border px-3 py-2">
+        </div>
 
-        <label>Penanggung Jawab:</label><br>
-        <input type="text" name="pj" value="{{ $data->pj }}" required><br><br>
+        <div class="mb-3">
+            <label class="block font-semibold">Penanggung Jawab:</label>
+            <input type="text" name="pj" value="{{ $data->pj }}" required class="w-full border px-3 py-2">
+        </div>
 
-        <label>Nominal:</label><br>
-        <input type="number" name="nominal" value="{{ $data->nominal }}" required><br><br>
+        <div class="mb-3">
+            <label class="block font-semibold">Nominal:</label>
+            <input type="number" name="nominal" value="{{ $data->nominal }}" required class="w-full border px-3 py-2">
+        </div>
 
-        <button type="submit">Update</button>
+        <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded">Update</button>
+        <a href="{{ route('pengeluaran.index') }}" class="bg-gray-300 text-gray-800 px-4 py-2 rounded hover:bg-gray-400">Batal</a>
     </form>
 
-    <br>
-    <a href="{{ route('pengeluaran.index') }}">← Kembali</a>
-
-</body>
-</html>
+@endsection
