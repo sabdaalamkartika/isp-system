@@ -42,6 +42,14 @@
                 </li>
                 @endif
 
+                @if(auth()->user()->role === 'admin')
+                <li>
+                    <a href="{{ route('paket.index') }}" class="block p-2 rounded hover:bg-gray-700">
+                        Paket
+                    </a>
+                </li>
+                @endif
+
                 {{-- 2. PEMBAYARAN (admin & staff) --}}
                 @if(auth()->user()->role === 'admin' || auth()->user()->role === 'staff')
                 <li>

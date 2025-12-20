@@ -6,6 +6,7 @@ use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\FinanceController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\PengeluaranController;
+use App\Http\Controllers\PaketController;
 use Illuminate\Support\Facades\Route;
 
 // =====================
@@ -56,4 +57,9 @@ Route::middleware(['auth', 'role:admin|finance'])->group(function () {
 Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::get('/clients/{id}/payments', [PaymentController::class, 'showByClient'])
         ->name('clients.payments');
+});
+
+// paket
+Route::middleware(['auth', 'role:admin'])->group(function () {
+    Route::resource('paket', PaketController::class);
 });

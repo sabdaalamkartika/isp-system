@@ -19,10 +19,16 @@
                class="w-full border px-3 py-2 rounded">
     </div>
 
-    <div class="mb-3">
-        <label class="block font-semibold">Paket</label>
-        <input type="text" name="paket"
-               class="w-full border px-3 py-2 rounded">
+    <div class="mb-4">
+        <label class="block font-medium">Paket</label>
+        <select name="paket_id" class="w-full border rounded px-3 py-2" required>
+            <option value="">-- Pilih Paket --</option>
+            @foreach($pakets as $paket)
+                <option value="{{ $paket->id }}">
+                    {{ $paket->nama_paket }} - {{ $paket->kecepatan }} - Rp {{ number_format($paket->harga,0,',','.') }}
+                </option>
+            @endforeach
+        </select>
     </div>
 
     <div class="mb-3">
@@ -36,16 +42,17 @@
         <textarea name="alamat" class="w-full border px-3 py-2 rounded"></textarea>
     </div>
 
-    <div class="mb-3">
-        <label class="block font-semibold">Harga</label>
-        <input type="number" name="harga"
-               class="w-full border px-3 py-2 rounded">
+    <div class="mb-4">
+        <label class="block font-medium">Tanggal Daftar</label>
+        <input type="date" name="tanggal_daftar"
+            value="{{ date('Y-m-d') }}"
+            class="w-full border rounded px-3 py-2" required>
     </div>
 
-    <div class="mb-3">
-        <label class="block font-semibold">Tagihan / Bulan</label>
-        <input type="number" name="tagihan_per_bulan"
-               class="w-full border px-3 py-2 rounded">
+    <div class="mb-4">
+        <label class="block font-medium">Status</label>
+        <input type="hidden" name="status" value="aktif">
+
     </div>
 
     <button class="bg-blue-600 text-white px-4 py-2 rounded">Simpan</button>

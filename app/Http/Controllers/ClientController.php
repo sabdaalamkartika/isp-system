@@ -4,72 +4,90 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Client;
+use App\Models\Paket;
 
 class ClientController extends Controller
 {
     public function index()
     {
-        $clients = Client::all();
+        $clients = Client::with('paket')->get();
         return view('clients.index', compact('clients'));
     }
 
+
     public function create()
     {
-        return view('clients.create');
+        $pakets = Paket::orderBy('nama_paket')->get();
+        return view('clients.create', compact('pakets'));
     }
+
 
     public function store(Request $request)
     {
-        // validasi sederhana (sesuaikan bila perlu)
         $request->validate([
             'nama_client' => 'required|string|max:255',
-            'username_pppoe' => 'required|string|max:255',
-            'paket' => 'required|string|max:255',
-            'no_telp' => 'required|string|max:50',
-            'harga' => 'required|numeric',
-            'alamat' => 'required|string',
-            'tagihan_per_bulan' => 'required|numeric',
+            'username_pppoe' => 'required|string|max:255|unique:clients,username_pppoe',
+            'paket_id' => 'required|exists:pakets,id',
+            'tanggal_daftar' => 'required|date',
+            'status' => 'required|in:aktif,nonaktif',
+            'no_telp' => 'nullable|string|max:50',
+            'alamat' => 'nullable|string',
         ]);
 
-        // Buat object Client secara manual (tidak menggunakan mass-assignment)
-        $client = new \App\Models\Client();
 
-        $client->nama_client = $request->input('nama_client');
-        $client->username_pppoe = $request->input('username_pppoe');
-        $client->paket = $request->input('paket');
-        $client->no_telp = $request->input('no_telp');
-        $client->harga = $request->input('harga');
-        $client->alamat = $request->input('alamat');
-        $client->tagihan_per_bulan = $request->input('tagihan_per_bulan');
+        Client::create([
+            'nama_client' => $request->nama_client,
+            'username_pppoe' => $request->username_pppoe,
+            'paket_id' => $request->paket_id,
+            'tanggal_daftar' => $request->tanggal_daftar,
+            'status' => $request->status,
+            'no_telp' => $request->no_telp,
+            'alamat' => $request->alamat,
+        ]);
 
-        $client->save();
 
-        return redirect()->route('clients.index')->with('success', 'Client berhasil ditambahkan.');
-        
-
+        return redirect()
+            ->route('clients.index')
+            ->with('success', 'Client berhasil ditambahkan');
     }
 
     public function edit($id)
     {
         $client = Client::findOrFail($id);
-        return view('clients.edit', compact('client'));
+        $pakets = Paket::all();
+
+        return view('clients.edit', compact('client', 'pakets'));
     }
 
     public function update(Request $request, $id)
     {
         $client = Client::findOrFail($id);
 
+        $request->validate([
+            'nama_client' => 'required|string|max:255',
+            'username_pppoe' => 'required|string|max:255|unique:clients,username_pppoe,' . $id,
+            'paket_id' => 'required|exists:pakets,id',
+            'tanggal_daftar' => 'required|date',
+            'status' => 'required|in:aktif,nonaktif',
+            'no_telp' => 'nullable|string|max:50',
+            'alamat' => 'nullable|string',
+        ]);
+
+
         $client->nama_client = $request->nama_client;
         $client->username_pppoe = $request->username_pppoe;
-        $client->paket = $request->paket;
+        $client->paket_id = $request->paket_id;
+        $client->status = $request->status;
+        $client->tanggal_daftar = $request->tanggal_daftar;
         $client->no_telp = $request->no_telp;
         $client->alamat = $request->alamat;
-        $client->harga = $request->harga;
-        $client->tagihan_per_bulan = $request->tagihan_per_bulan;
 
         $client->save();
 
-        return redirect()->route('clients.index')->with('success', 'Client berhasil diupdate.');
+
+        return redirect()
+            ->route('clients.index')
+            ->with('success', 'Client berhasil diupdate');
     }
 
     public function destroy($id)
@@ -77,8 +95,8 @@ class ClientController extends Controller
         $client = Client::findOrFail($id);
         $client->delete();
 
-        return redirect()->route('clients.index')->with('success', 'Client berhasil dihapus.');
+        return redirect()
+            ->route('clients.index')
+            ->with('success', 'Client berhasil dihapus');
     }
-
-
 }
