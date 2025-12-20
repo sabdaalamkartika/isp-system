@@ -12,29 +12,29 @@
     <table class="w-full border border-gray-300 bg-white rounded shadow-sm">
     <thead class="bg-gray-100">
         <tr>
-            <th class="px-3 py-2 border">Nama</th>
-            <th class="px-3 py-2 border">PPPoE</th>
-            <th class="px-3 py-2 border">Paket</th>
-            <th class="px-3 py-2 border">Alamat</th>
-            <th class="px-3 py-2 border">No Tlp</th>
-            <th class="px-3 py-2 border">Status</th>
-            <th class="px-3 py-2 border">Tgl Daftar</th>
-            <th class="px-3 py-2 border text-center">Aksi</th>
+            <th class="p-3 text-left">Nama</th>
+            <th class="p-3 text-left">PPPoE</th>
+            <th class="p-3 text-left">Paket</th>
+            <th class="p-3 text-left">Alamat</th>
+            <th class="p-3 text-left">No Tlp</th>
+            <th class="p-3 text-left">Status</th>
+            <th class="p-3 text-left">Tgl Daftar</th>
+            <th class="p-3   text-center">Aksi</th>
         </tr>
     </thead>
 
-    <tbody>
+     <tbody class="divide-y divide-gray-200">
         @foreach ($clients as $client)
         <tr class="hover:bg-gray-50">
-            <td class="px-3 py-2 border">
+            <td class="p-3 text-left">
                 {{ $client->nama_client }}
             </td>
 
-            <td class="px-3 py-2 border">
+            <td class="p-3 text-left">
                 {{ $client->username_pppoe }}
             </td>
 
-            <td class="px-3 py-2 border">
+            <td class="p-3 text-left    ">
                 @if($client->paket)
                     <div class="">
                         {{ $client->paket->nama_paket }}
@@ -47,15 +47,15 @@
                 @endif
             </td>
 
-            <td class="px-3 py-2 border">
+            <td class="p-3 text-left">
                 {{ $client->alamat }}
             </td>
 
-            <td class="px-3 py-2 border">
+            <td class="p-3 text-left">
                 {{ $client->no_telp }}
             </td>
 
-            <td class="px-3 py-2 border text-center">
+            <td class="p-3 text-left">
                 @if($client->status === 'aktif')
                     <span class="px-2 py-1 text-xs bg-green-100 text-green-700 rounded">
                         Aktif
@@ -67,11 +67,11 @@
                 @endif
             </td>
 
-            <td class="px-3 py-2 border text-center">
+            <td class="p-3 text-left">
                 {{ \Carbon\Carbon::parse($client->tanggal_daftar)->format('d M Y') }}
             </td>
 
-            <td class="px-3 py-2 border text-center space-x-2">
+            <td class="p-3 text-center space-x-2">
                 <a href="{{ route('clients.edit', $client->id) }}"
                    class="text-blue-600 hover:underline">
                     Edit
