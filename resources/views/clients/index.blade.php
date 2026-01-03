@@ -36,10 +36,7 @@
 
             <td class="p-3 text-left    ">
                 @if($client->paket)
-                    <div class="">
-                        {{ $client->paket->nama_paket }}
-                    </div>
-                    <div class="text-sm text-gray-500">
+                    <div>
                         Rp {{ number_format($client->paket->harga, 0, ',', '.') }}
                     </div>
                 @else

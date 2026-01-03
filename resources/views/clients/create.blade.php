@@ -31,7 +31,7 @@
         </select>
     </div>
 
-    <div class="mb-3">
+    <div class="mb-4">
         <label class="block font-semibold">No Telp</label>
         <input type="text" name="no_telp"
                class="w-full border px-3 py-2 rounded">

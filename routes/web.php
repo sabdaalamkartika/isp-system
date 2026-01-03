@@ -63,3 +63,9 @@ Route::middleware(['auth', 'role:admin'])->group(function () {
 Route::middleware(['auth', 'role:admin'])->group(function () {
     Route::resource('paket', PaketController::class);
 });
+
+//bayar
+Route::middleware(['auth', 'role:admin|staff'])->group(function () {
+    Route::patch('/payments/{payment}/bayar', [PaymentController::class, 'bayar'])
+        ->name('payments.bayar');
+});

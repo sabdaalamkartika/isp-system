@@ -60,6 +60,7 @@
                 <th class="border px-3 py-2">Paket</th>
                 <th class="border px-3 py-2">Tanggal Pembayaran Terakhir</th>
                 <th class="border px-3 py-2">Nominal</th>
+                <th class="border px-3 py-2">Status</th>
                 <th class="border px-3 py-2">Keterangan</th>
                 <th class="border px-3 py-2">Aksi</th>
             </tr>
@@ -73,12 +74,40 @@
                 <td class="border px-3 py-2">{{ $p->client->paket ?? '-' }}</td>
                 <td class="border px-3 py-2">{{ $p->tanggal_pembayaran }}</td>
                 <td class="border px-3 py-2">{{ number_format($p->nominal) }}</td>
-                <td class="border px-3 py-2">{{ $p->keterangan }}</td>
                 <td class="border px-3 py-2">
-                    <a href="/clients/{{ $p->client_id }}/payments"
-                    class="bg-green-500 text-white px-3 py-1 rounded"
-                    >Detail</a> 
+                    @if($p->status === 'sudah_dibayar')
+                        <span class="text-green-600 font-semibold">Sudah Dibayar</span>
+                    @else
+                        <span class="text-red-600 font-semibold">Belum Dibayar</span>
+                    @endif
                 </td>
+
+                <td class="border px-3 py-2">{{ $p->keterangan }}</td>
+                <td class="border px-3 py-2 space-x-2">
+                    <a href="/clients/{{ $p->client_id }}/payments"
+                        class="bg-green-500 text-white px-3 py-1 rounded">
+                        Detail
+                    </a>
+
+                    @if(auth()->user()->role === 'admin' || auth()->user()->role === 'staff')
+                        @if($p->status === 'belum_dibayar')
+                            <form action="{{ route('payments.bayar', $p->id) }}"
+                                method="POST"
+                                class="inline">
+                                @csrf
+                                @method('PATCH')
+
+                                <button
+                                    type="submit"
+                                    class="bg-blue-600 text-white px-3 py-1 rounded hover:bg-blue-700">
+                                    Bayar
+                                </button>
+                            </form>
+                        @endif
+                    @endif
+
+                </td>
+
             </tr>
             @endforeach
         </tbody>

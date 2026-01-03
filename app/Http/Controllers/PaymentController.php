@@ -61,8 +61,8 @@ class PaymentController extends Controller
 
         // Ambil hanya pembayaran terbaru per client
         $payments = $query->get()
-                    ->unique('client_id')
-                    ->values();
+            ->unique('client_id')
+            ->values();
 
         // Hitung total pemasukan berdasarkan filter
         $total_pemasukan = $query->sum('nominal');
@@ -124,5 +124,21 @@ class PaymentController extends Controller
         }
 
         return redirect()->route('payments.index')->with('success', 'Pembayaran berhasil dihapus.');
+    }
+
+    public function bayar($id)
+    {
+        $payment = Payment::findOrFail($id);
+
+        // Cegah double bayar
+        if ($payment->status === 'sudah_dibayar') {
+            return back()->with('error', 'Pembayaran sudah lunas.');
+        }
+
+        $payment->status = 'sudah_dibayar';
+        $payment->tanggal_pembayaran = now();
+        $payment->save();
+
+        return back()->with('success', 'Pembayaran berhasil.');
     }
 }
